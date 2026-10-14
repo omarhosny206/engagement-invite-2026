@@ -3,6 +3,47 @@ const stage = document.getElementById("envelopeStage");
 const invitation = document.getElementById("invitation");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const themeToggles = [document.getElementById("coverThemeToggle"), document.getElementById("themeToggle")];
+const music = document.getElementById("backgroundMusic");
+const soundToggle = document.getElementById("soundToggle");
+let musicEnabled = true;
+try {
+  musicEnabled = localStorage.getItem("engagement-music") !== "off";
+} catch {
+  // Music still works without saved preferences.
+}
+music.volume = 0.35;
+
+function updateSoundToggle() {
+  const playing = !music.paused;
+  const label = playing ? "إيقاف الموسيقى" : "تشغيل الموسيقى";
+  soundToggle.classList.toggle("is-playing", playing);
+  soundToggle.setAttribute("aria-pressed", String(playing));
+  soundToggle.setAttribute("aria-label", label);
+  soundToggle.title = label;
+}
+
+function playMusic() {
+  if (document.documentElement.classList.contains("is-opened")) music.muted = false;
+  const playback = music.play();
+  if (playback && typeof playback.catch === "function") {
+    playback.catch(updateSoundToggle);
+  }
+}
+
+soundToggle.addEventListener("click", () => {
+  musicEnabled = music.paused;
+  if (musicEnabled) playMusic();
+  else music.pause();
+  try {
+    localStorage.setItem("engagement-music", musicEnabled ? "on" : "off");
+  } catch {
+    // The selected setting still works for this visit.
+  }
+  updateSoundToggle();
+});
+music.addEventListener("play", updateSoundToggle);
+music.addEventListener("pause", updateSoundToggle);
+music.addEventListener("error", updateSoundToggle);
 let savedTheme;
 try {
   savedTheme = localStorage.getItem("engagement-theme");
@@ -83,11 +124,23 @@ function celebratePaper() {
 function openEnvelope(event) {
   event.preventDefault();
   if (stage.classList.contains("is-open")) return;
+  if (musicEnabled) {
+    music.muted = true;
+    playMusic();
+  }
   stage.classList.add("is-open");
   openButton.setAttribute("aria-expanded", "true");
   burstHearts();
   setTimeout(() => {
     document.documentElement.classList.add("is-opened");
+    if (musicEnabled) {
+      try {
+        music.currentTime = 0;
+      } catch {
+        // Playback will begin at the start once the file finishes loading.
+      }
+      music.muted = false;
+    }
     invitation.scrollTop = 0;
     celebratePaper();
     document.getElementById("invitation-title").focus({ preventScroll: true });

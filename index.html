@@ -16,6 +16,7 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <audio id="backgroundMusic" src="music.wav" preload="none" loop></audio>
   <div class="page">
     <main id="top">
       <section class="hero" aria-label="ظرف الدعوة">
@@ -39,6 +40,10 @@
 
       <section class="invitation" id="invitation" aria-labelledby="invitation-title">
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الداكن">☾</button>
+        <button class="theme-toggle sound-toggle" id="soundToggle" type="button" aria-label="تشغيل الموسيقى" aria-pressed="false" title="تشغيل الموسيقى">
+          <svg class="sound-toggle__playing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9v6h3l4 3V6L8 9H5Z"/><path d="M15 9a4 4 0 0 1 0 6M17.5 6a8 8 0 0 1 0 12"/></svg>
+          <svg class="sound-toggle__muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9v6h3l4 3V6L8 9H5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg>
+        </button>
         <div class="invitation__paper">
           <figure class="paper-photo"><img src="us-cutout.png" alt="صورتنا وإحنا صغيرين" width="1084" height="1451"></figure>
           <img class="floral floral--card-top" src="floral.svg" alt="" aria-hidden="true">

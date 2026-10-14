@@ -124,10 +124,10 @@ a{color:inherit}
 .js .invitation__paper{transform:translateY(100px) rotate(-4deg) scale(.76)}
 .js.is-opened .invitation__paper{opacity:1;transform:none;animation:paper-unfold .95s .05s cubic-bezier(.17,.83,.2,1) both}
 .paper-photo{
-  position:relative;z-index:3;width:min(47%,245px);margin:0 auto 6px;
+  position:relative;z-index:3;width:min(55%,320px);margin:0 auto 6px;
   filter:drop-shadow(0 15px 12px #4d3b3261) drop-shadow(0 28px 25px #4d3b3233);
 }
-.paper-photo img{display:block;width:100%;height:auto;max-height:330px;object-fit:contain}
+.paper-photo img{display:block;width:100%;height:auto;max-height:430px;object-fit:contain}
 .floral{position:absolute;z-index:1;pointer-events:none;user-select:none;translate:0 var(--flower-scroll,0px)}
 .floral--card-top{width:145px;right:-42px;top:-75px;transform:rotate(-26deg);opacity:.9}
 .floral--card-bottom{width:145px;left:-42px;bottom:-120px;transform:scaleX(-1) rotate(-18deg);opacity:.9}
@@ -190,6 +190,11 @@ a{color:inherit}
 }
 .theme-toggle--cover{position:absolute;z-index:12;top:30px;right:30px;width:43px;height:43px}
 .theme-toggle:hover{transform:rotate(30deg)}
+.sound-toggle{right:76px}
+.sound-toggle:hover{transform:translateY(-2px)}
+.sound-toggle svg{width:22px;height:22px}
+.sound-toggle__playing,.sound-toggle.is-playing .sound-toggle__muted{display:none}
+.sound-toggle.is-playing .sound-toggle__playing{display:block}
 .flying-flowers{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none}
 .flying-flowers span{
   position:absolute;top:-32px;left:var(--x);color:#cd8ca5;font-size:20px;
@@ -276,8 +281,8 @@ a{color:inherit}
   .invitation__paper{padding:32px 26px 100px}
   .invitation__paper:before{inset:9px}
   .invitation__paper:after{inset:16px}
-  .paper-photo{width:min(60%,205px)}
-  .paper-photo img{max-height:275px}
+  .paper-photo{width:min(88%,280px)}
+  .paper-photo img{max-height:390px}
   .floral--card-top,.floral--card-bottom{width:95px;opacity:.82}
   .invitation__title{font-size:clamp(44px,11vw,59px)}
   .names{gap:9px}
@@ -288,6 +293,7 @@ a{color:inherit}
   .venue>div>span:last-child{font-size:13px}
   .theme-toggle{top:12px;right:18px;width:36px;height:36px}
   .theme-toggle--cover{top:20px;right:20px}
+  .sound-toggle{right:64px}
 }
 @media(max-width:360px){
   .hero{padding:10px}
@@ -295,7 +301,7 @@ a{color:inherit}
   .open-cue{left:calc(50% + 39px);width:85px;font-size:12px}
   .invitation{padding-inline:10px}
   .invitation__paper{padding:27px 17px 88px}
-  .paper-photo{width:61%;max-width:180px}
+  .paper-photo{width:88%;max-width:260px}
   .date-card strong{font-size:25px}
   .venue strong{font-size:15px}
 }
