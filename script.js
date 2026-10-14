@@ -81,8 +81,8 @@ function celebratePaper() {
 }
 
 function openEnvelope(event) {
-  if (stage.classList.contains("is-open")) return;
   event.preventDefault();
+  if (stage.classList.contains("is-open")) return;
   stage.classList.add("is-open");
   openButton.setAttribute("aria-expanded", "true");
   burstHearts();
@@ -91,7 +91,7 @@ function openEnvelope(event) {
     invitation.scrollTop = 0;
     celebratePaper();
     document.getElementById("invitation-title").focus({ preventScroll: true });
-  }, reduceMotion.matches ? 0 : 900);
+  }, reduceMotion.matches ? 0 : 1600);
 }
 
 stage.addEventListener("click", openEnvelope);
