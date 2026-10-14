@@ -2,7 +2,7 @@ const openButton = document.getElementById("openButton");
 const stage = document.getElementById("envelopeStage");
 const invitation = document.getElementById("invitation");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const themeToggle = document.getElementById("themeToggle");
+const themeToggles = [document.getElementById("coverThemeToggle"), document.getElementById("themeToggle")];
 let savedTheme;
 try {
   savedTheme = localStorage.getItem("engagement-theme");
@@ -12,12 +12,14 @@ try {
 
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
-  themeToggle.textContent = theme === "dark" ? "☀" : "☾";
-  themeToggle.setAttribute("aria-label", theme === "dark" ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن");
+  for (const toggle of themeToggles) {
+    toggle.textContent = theme === "dark" ? "☀" : "☾";
+    toggle.setAttribute("aria-label", theme === "dark" ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن");
+  }
 }
 
 applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme : "light");
-themeToggle.addEventListener("click", () => {
+function toggleTheme() {
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   savedTheme = next;
   applyTheme(next);
@@ -26,7 +28,8 @@ themeToggle.addEventListener("click", () => {
   } catch {
     // The selected theme still works for this visit.
   }
-});
+}
+for (const toggle of themeToggles) toggle.addEventListener("click", toggleTheme);
 document.documentElement.classList.add("js");
 
 let scrollFrame = 0;
