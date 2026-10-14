@@ -1,9 +1,24 @@
 const openButton = document.getElementById("openButton");
+const openHint = document.getElementById("openHint");
 const stage = document.getElementById("envelopeStage");
 const invitation = document.getElementById("invitation");
 const shareButton = document.getElementById("shareButton");
 const toast = document.getElementById("toast");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+document.documentElement.classList.add("js");
+
+const paper = document.querySelector(".invitation__paper");
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      paper.classList.add("is-visible");
+      observer.disconnect();
+    }
+  }, { threshold: 0.15 });
+  observer.observe(paper);
+} else {
+  paper.classList.add("is-visible");
+}
 let toastTimer;
 
 function showToast(message) {
@@ -29,18 +44,23 @@ function burstHearts() {
   }
 }
 
-openButton.addEventListener("click", () => {
+function openEnvelope(event) {
   if (stage.classList.contains("is-open")) return;
+  event.preventDefault();
   stage.classList.add("is-open");
+  document.documentElement.classList.add("is-opened");
   openButton.setAttribute("aria-expanded", "true");
   burstHearts();
   setTimeout(() => invitation.scrollIntoView({ behavior: reduceMotion.matches ? "instant" : "smooth" }), reduceMotion.matches ? 0 : 950);
-});
+}
+
+stage.addEventListener("click", openEnvelope);
+openHint.addEventListener("click", openEnvelope);
 
 shareButton.addEventListener("click", async () => {
   const shareData = {
-    title: "دعوة خطوبة عمر وسماء",
-    text: "عمر وسماء اتخطبوا! شاركونا فرحتنا يوم ٣٠ أكتوبر ٢٠٢٦ الساعة ٦ مساءً في Katameya Gardens Club ♥",
+    title: "دعوة خطوبتنا | ٣٠ أكتوبر ٢٠٢٦",
+    text: "مستنيينك في خطوبتنا يوم ٣٠ أكتوبر ٢٠٢٦ الساعة ٦ مساءً في Katameya Gardens Club، Outdoor Garden Hall ♥",
     url: window.location.href.split("#")[0]
   };
   if (navigator.share) {
@@ -53,8 +73,8 @@ shareButton.addEventListener("click", async () => {
   }
   try {
     await navigator.clipboard.writeText(shareData.url);
-    showToast("لينك الدعوة اتنسخ! ابعتوه للي بتحبوهم ♥");
+    showToast("لينك الدعوة اتنسخ! ابعته للي بتحبهم ♥");
   } catch {
-    showToast("انسخوا لينك الصفحة من شريط العنوان وشاركوه ♥");
+    showToast("انسخ لينك الصفحة من شريط العنوان وشاركه ♥");
   }
 });
