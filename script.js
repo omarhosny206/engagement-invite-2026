@@ -1,11 +1,7 @@
 const openButton = document.getElementById("openButton");
 const stage = document.getElementById("envelopeStage");
-const openCue = document.querySelector(".open-cue");
 const invitation = document.getElementById("invitation");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const chaseLimit = 3;
-let chaseCount = 0;
-if (!reduceMotion.matches) stage.classList.add("is-playful");
 const themeToggles = [document.getElementById("coverThemeToggle"), document.getElementById("themeToggle")];
 const music = document.getElementById("backgroundMusic");
 const soundToggle = document.getElementById("soundToggle");
@@ -133,7 +129,6 @@ function openEnvelope(event) {
     playMusic();
   }
   stage.classList.add("is-open");
-  openCue.classList.add("is-hidden");
   openButton.setAttribute("aria-expanded", "true");
   burstHearts();
   setTimeout(() => {
@@ -152,38 +147,4 @@ function openEnvelope(event) {
   }, reduceMotion.matches ? 0 : 1600);
 }
 
-stage.addEventListener("pointerenter", (event) => {
-  if (event.pointerType === "mouse" && stage.classList.contains("is-playful")) {
-    stage.style.setProperty("--chase-speed", ".4s");
-  }
-});
-
-let ignoreTouchClickUntil = 0;
-function attemptToOpen(event) {
-  event.preventDefault();
-  if (stage.classList.contains("is-open")) return;
-  const accessibleActivation = event.type === "click" && event.detail === 0;
-  if (!reduceMotion.matches && !accessibleActivation && chaseCount < chaseLimit) {
-    chaseCount += 1;
-    stage.style.setProperty("--chase-speed", `${Math.max(.28, .4 - chaseCount * .04)}s`);
-    if (chaseCount === chaseLimit) {
-      stage.classList.remove("is-playful");
-      stage.classList.add("is-catchable");
-    }
-    return;
-  }
-  openEnvelope(event);
-}
-
-stage.addEventListener("pointerdown", (event) => {
-  if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
-  ignoreTouchClickUntil = performance.now() + 1000;
-  attemptToOpen(event);
-});
-stage.addEventListener("click", (event) => {
-  if (event.detail !== 0 && performance.now() < ignoreTouchClickUntil) {
-    event.preventDefault();
-    return;
-  }
-  attemptToOpen(event);
-});
+stage.addEventListener("click", openEnvelope);
